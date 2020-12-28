@@ -50,8 +50,19 @@ class Root(object):
         Put all messages into the page
         """
         messages = (generate_message() for _ in range(MESSAGE_COUNT))
+        messages_list = list(messages)
+
         template = env.get_template('one_time_pad')
-        return template.render(messages=messages)
+        template_txt = env.get_template('one_time_pad_txt')
+
+        output = template.render(messages=messages_list)
+        output_txt = template_txt.render(messages_txt=messages_list)
+
+        f = open("output.txt", "r+")
+        print(output_txt, file=f)
+        f.close()
+
+        return output
 
     @cherrypy.expose
     def index(self):
@@ -82,7 +93,7 @@ https://learningselfreliance.com/one_time_pad</a>.  The server will generate a u
 is not stored on the server, and cannot be retrieved once you close this window!
 <br>
 To learn how to use this page, please visit: <a href="https://lrnsr.co/H7Za">https://lrnsr.co/H7Za</a>
-''', 'one_time_pad_txt':'''[[ for num, message in messages|enumerate(1) ]]Message [- num -]
+''', 'one_time_pad_txt':'''[[ for num, message in messages_txt|enumerate(1) ]]Message [- num -]
 [- message -]
 
 [[ endfor ]]
@@ -101,13 +112,6 @@ env = Environment(
 )
 
 env.filters['enumerate'] = enumerate
-
-# Drop a one time pad into the folder as text.
-messages = (generate_message() for _ in range(MESSAGE_COUNT))
-template_txt = env.get_template('one_time_pad_txt')
-f = open("output.txt", "r+")
-print(template_txt.render(messages=messages), file=f)
-f.close() 
 
 if __name__ == '__main__':
     # Start cherrypy server
