@@ -82,6 +82,10 @@ https://learningselfreliance.com/one_time_pad</a>.  The server will generate a u
 is not stored on the server, and cannot be retrieved once you close this window!
 <br>
 To learn how to use this page, please visit: <a href="https://lrnsr.co/H7Za">https://lrnsr.co/H7Za</a>
+''', 'one_time_pad_txt':'''[[ for num, message in messages|enumerate(1) ]]Message [- num -]
+[- message -]
+
+[[ endfor ]]
 ''',
 }
 
