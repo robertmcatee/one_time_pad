@@ -55,7 +55,7 @@ class Root(object):
 
     @cherrypy.expose
     def index(self):
-        return "Navigate to /one_time_pad. This is the index of the root object. Empty on Purpose."
+        return "<h1>Localhost Home</h1>Navigate to <a href='/one_time_pad'>One Time Pad</a>. This is the index of the root object."
 
 # This is the only page.  Links are shortened to make manual typing easier.
 templates = {'one_time_pad': '''
