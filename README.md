@@ -1,12 +1,31 @@
 # one_time_pad
+A simple one time pad generator that runs on cherrypy. Also can output content to text file. 
 
 ## Install Git
+Download and install Git for your respective operating system.
+
 ## Clone Repository
+    git clone https://github.com/robertmcatee/one_time_pad/
+
 ## Install and Setup Python
-### pip install jinja2
-### pip install cherrypy
+Download and install Python for your respective operating system
+
+### Obtain dependencies
+    pip install jinja2
+    pip install cherrypy
+
+## Create a blank Output.txt file in your working directory
+    I added a couple of lines to output a OTP to the working directory. Create a blank output.txt file in your working directory and check it after you run the program.
+
 ## Run the Script
-python otp_server.py
+    python otp_server.py
+
+## Browse to http://localhost:8080/one_time_pad
+Open a web browser and browse to yourself on port 8080 and location one_time_pad
+
+## Open the output.txt
+Navigate to your working folder and look at output.txt
+
 ## Sample Output
 ```
 Message 1
