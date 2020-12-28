@@ -98,6 +98,13 @@ env = Environment(
 
 env.filters['enumerate'] = enumerate
 
+# Drop a one time pad into the folder as text.
+messages = (generate_message() for _ in range(MESSAGE_COUNT))
+template_txt = env.get_template('one_time_pad_txt')
+f = open("output.txt", "r+")
+print(template_txt.render(messages=messages), file=f)
+f.close()
+
 if __name__ == '__main__':
     # Start cherrypy server
     cherrypy.quickstart(cherrypy.Application(Root()), '/', config=CONFIG)
