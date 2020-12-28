@@ -53,6 +53,9 @@ class Root(object):
         template = env.get_template('one_time_pad')
         return template.render(messages=messages)
 
+    @cherrypy.expose
+    def index(self):
+        return "Navigate to /one_time_pad. This is the index of the root object. Empty on Purpose."
 
 # This is the only page.  Links are shortened to make manual typing easier.
 templates = {'one_time_pad': '''
