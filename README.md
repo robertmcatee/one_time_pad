@@ -15,7 +15,7 @@ Download and install Python for your respective operating system
     pip install cherrypy
 
 ## Create a blank Output.txt file in your working directory
-    I added a couple of lines to output a OTP to the working directory. Create a blank output.txt file in your working directory and check it after you run the program.
+I added a couple of lines to output a OTP to the working directory. Create a blank output.txt file in your working directory and check it after you run the program.
 
 ## Run the Script
     python otp_server.py
