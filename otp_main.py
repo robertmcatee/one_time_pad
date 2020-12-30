@@ -1,25 +1,17 @@
 #! /usr/bin/env python3
-"""
-Generate One Time Pad files, or serve the pads up using a CherryPy server.
-"""
 from jinja2 import DictLoader, Environment
 import secrets
-import cherrypy
-
-# CherryPy config
-CONFIG = {'global': {'server.socket_port': 8080}}
 
 # The characters available for the One Time Pad
 OTP_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 # The number of characters in each group, separated by spaces
 GROUP_SIZE = 5
 # The groups in each row of a message, separated by newlines
-GROUP_COUNT = 20
+GROUP_COUNT = 15
 # The number of rows per message
 ROW_COUNT = 4
 # The number of messages per page
 MESSAGE_COUNT = 9
-
 
 def generate_row(group_count=GROUP_COUNT, group_size=GROUP_SIZE):
     """
@@ -33,29 +25,11 @@ def generate_row(group_count=GROUP_COUNT, group_size=GROUP_SIZE):
         groups.append(''.join([secrets.choice(OTP_CHARS) for _ in range(group_size)]))
     return ' '.join(groups)
 
-
 def generate_message(row_count=ROW_COUNT, group_count=GROUP_COUNT, group_size=GROUP_SIZE):
     """
     Combine several rows into a single message.
     """
     return '\n'.join(generate_row(group_count, group_size) for _ in range(ROW_COUNT))
-
-class Root(object):
-
-    @cherrypy.expose
-    def one_time_pad(self):
-        messages = (generate_message() for _ in range(MESSAGE_COUNT))
-        messages_list = list(messages)
-
-        template = env.get_template('one_time_pad')
-
-        output = template.render(messages=messages_list)
-
-        return output
-
-    @cherrypy.expose
-    def index(self):
-        return "<h1>Localhost Home</h1>Navigate to <a href='/one_time_pad'>One Time Pad</a>. This is the index of the root object."
 
 # This is the only page.  Links are shortened to make manual typing easier.
 templates = {'one_time_pad': '''
@@ -70,19 +44,11 @@ a { text-decoration: none; }
 [- message -]
 </pre>
 [[ endfor ]]
+''', 'one_time_pad_txt':'''[[ for num, message in messages_txt|enumerate(1) ]]Message [- num -]
+[- message -]
 
-Print this page and distribute the copies (along with the <a href="https://lrnsr.co/aY6m">One Time Pad Cheat Sheet
-https://lrnsr.co/aY6m</a>) to all members of your group that you trust to receive your encrypted messages.  Every
-person must have their OWN copy of this "One Time Pad" to encrypt and decrypt messages.
-<br>
-<b>Use each message ONLY ONCE.</b>  Cut off and burn each message from this paper as it is used.
-<br>
-If you want more One Time Pads, simply <a href=".">go here to refresh the page:
-https://learningselfreliance.com/one_time_pad</a>.  The server will generate a unique page just for you. This page
-is not stored on the server, and cannot be retrieved once you close this window!
-<br>
-To learn how to use this page, please visit: <a href="https://lrnsr.co/H7Za">https://lrnsr.co/H7Za</a>
-''', 
+[[ endfor ]]
+''',
 }
 
 env = Environment(
@@ -97,7 +63,3 @@ env = Environment(
 )
 
 env.filters['enumerate'] = enumerate
-
-if __name__ == '__main__':
-    # Start cherrypy server
-    cherrypy.quickstart(cherrypy.Application(Root()), '/', config=CONFIG)
